@@ -1,0 +1,26 @@
+public class MaxBridgeTabulation {
+    public static int maxBridges(int[][] bridges) {
+        Arrays.sort(bridges, Comparator.comparingInt(a -> a[0]));
+        int n = bridges.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+
+        int maxLen = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (bridges[i][1] > bridges[j][1]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLen = Math.max(maxLen, dp[i]);
+        }
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        int[][] bridges = { {6,2}, {4,3}, {2,6}, {1,5} };
+
+        int result = maxBridges(bridges);
+        System.out.println("Max non-crossing bridges (Tabulation): " + result);
+    }
+}
