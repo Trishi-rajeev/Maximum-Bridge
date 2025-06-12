@@ -1,0 +1,23 @@
+public class MaxBridgeRecursion {
+    static int maxBridges(int[][] bridges, int currentIndex, int prevSouth) {
+        if (currentIndex == bridges.length) return 0;
+
+        int notTake = maxBridges(bridges, currentIndex + 1, prevSouth);
+
+        int take = 0;
+        if (bridges[currentIndex][1] > prevSouth) {
+            take = 1 + maxBridges(bridges, currentIndex + 1, bridges[currentIndex][1]);
+        }
+
+        return Math.max(take, notTake);
+    }
+
+    public static void main(String[] args) {
+        int[][] bridges = { {6,2}, {4,3}, {2,6}, {1,5} };
+
+        Arrays.sort(bridges, Comparator.comparingInt(a -> a[0]));
+
+        int result = maxBridges(bridges, 0, Integer.MIN_VALUE);
+        System.out.println("Max non-crossing bridges (Recursion): " + result);
+    }
+}
