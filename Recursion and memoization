@@ -1,0 +1,30 @@
+public class MaxBridgeMemo {
+    static int[][] dp;
+
+    static int maxBridges(int[][] bridges, int currentIndex, int prevIndex) {
+        if (currentIndex == bridges.length) return 0;
+        if (dp[currentIndex][prevIndex + 1] != -1) return dp[currentIndex][prevIndex + 1];
+
+        int notTake = maxBridges(bridges, currentIndex + 1, prevIndex);
+
+        int take = 0;
+        if (prevIndex == -1 || bridges[currentIndex][1] > bridges[prevIndex][1]) {
+            take = 1 + maxBridges(bridges, currentIndex + 1, currentIndex);
+        }
+
+        return dp[currentIndex][prevIndex + 1] = Math.max(take, notTake);
+    }
+
+    public static void main(String[] args) {
+        int[][] bridges = { {6,2}, {4,3}, {2,6}, {1,5} };
+
+        Arrays.sort(bridges, Comparator.comparingInt(a -> a[0]));
+
+        int n = bridges.length;
+        dp = new int[n][n + 1];
+        for (int[] row : dp) Arrays.fill(row, -1);
+
+        int result = maxBridges(bridges, 0, -1);
+        System.out.println("Max non-crossing bridges (Memoization): " + result);
+    }
+}
